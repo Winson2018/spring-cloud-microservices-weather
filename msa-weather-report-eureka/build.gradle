@@ -1,0 +1,113 @@
+// buildscript 代码块中脚本优先执行
+buildscript {
+
+	// ext 用于定义动态属性
+	ext {
+		springBootVersion = '2.0.0.M3'
+	}
+
+	// 使用了Maven的中央仓库及Spring自己的仓库（也可以指定其他仓库）
+	repositories {
+		// mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+		maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+	}
+
+	// 依赖关系
+	dependencies {
+
+		// classpath 声明了在执行其余的脚本时，ClassLoader 可以使用这些依赖项
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+/*plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.3.12.RELEASE'
+}*/
+
+// 使用插件
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+// 指定了生成的编译文件的版本，默认是打成了 jar 包
+group = 'com.waylau.spring.cloud'
+version = '1.0.0'
+
+// 指定编译 .java 文件的 JDK 版本
+sourceCompatibility = 1.8
+
+// 使用了Maven的中央仓库及Spring自己的仓库（也可以指定其他仓库）
+repositories {
+	//mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+}
+
+ext {
+	springCloudVersion = 'Finchley.M2'
+}
+
+// 依赖关系
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'junit:junit:4.13.1'
+	implementation 'org.projectlombok:lombok:1.18.18'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//Thymeleaf
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+	
+	// Eureka Client
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+
+/*
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+*/
+//group = 'com.winson.spring.cloud'
+//version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '1.8'
+/*
+repositories {
+
+	//默认仓库，在国外，访问速度慢
+	//mavenCentral()
+
+	//新增阿里云镜像
+	maven {url 'https://maven.aliyun.com/nexus/content/groups/public/'}
+	//maven {url 'https://maven.aliyun.com/nexus/content/repositories/jcenter'}
+	//新增spring插件
+	maven {url "https://repo.spring.io/snapshot"}
+	maven {url "https://repo.spring.io/milestone"}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'junit:junit:4.13.1'
+	implementation 'org.projectlombok:lombok:1.18.18'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
+	//Thymeleaf
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+}
+
+test {
+	useJUnitPlatform()
+}
+*/
